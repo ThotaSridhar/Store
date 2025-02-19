@@ -1,13 +1,18 @@
 package com.sridhar.Store;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StoreApplication {
+public class StoreApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StoreApplication.class, args);
 	}
 
+	@Override
+	public void run(String... args) throws Exception {
+		System.out.println("Application is started this method is from run of CommandLineRunner");
+	}
 }
