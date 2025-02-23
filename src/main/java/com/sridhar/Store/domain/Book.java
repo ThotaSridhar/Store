@@ -1,7 +1,8 @@
 package com.sridhar.Store.domain;
 
 
-//import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -15,12 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
-//@Entity
-//@Table(name="book")
+@Entity
+@Table(name="book")
 public class Book {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 
     Integer id;
 
@@ -33,7 +34,8 @@ public class Book {
     Double cost;
     @Min(value = 2000)
     Integer year;
-//    @OneToMany(mappedBy = "book",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("book")
     List<Review> reviewList;
 
     public Integer getId() {

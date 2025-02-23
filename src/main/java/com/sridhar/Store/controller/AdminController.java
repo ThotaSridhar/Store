@@ -3,6 +3,7 @@ package com.sridhar.Store.controller;
 
 import com.sridhar.Store.domain.Book;
 import com.sridhar.Store.service.BookService;
+import com.sridhar.Store.service.ReviewService;
 import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,9 @@ public class AdminController {
 
     @Autowired
     BookService bookService;
+
+    @Autowired
+    ReviewService reviewService;
 
     @PostMapping("/admin/book")
     public ResponseEntity<?> addBook(@RequestBody Book book){
@@ -30,10 +34,17 @@ public class AdminController {
         return  new ResponseEntity<>(book1, HttpStatusCode.valueOf(200));
     }
 
-    @DeleteMapping("/admin/book{id}")
+    @DeleteMapping("/admin/book/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable("id") Integer id){
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatusCode.valueOf(204));
+    }
+
+    @DeleteMapping("/admin/review/{id}")
+    public ResponseEntity<?> deleteReview(@PathVariable("id") Integer id){
+        reviewService.deleteReview(id);
+        return  new ResponseEntity<>("If any review present with the given id that will be deleted ",
+                HttpStatus.ACCEPTED);
     }
 
 

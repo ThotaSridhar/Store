@@ -1,7 +1,9 @@
 package com.sridhar.Store.service.impl;
 
 import com.sridhar.Store.domain.Book;
+import com.sridhar.Store.repositories.BookRepository;
 import com.sridhar.Store.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,49 +12,49 @@ import java.util.*;
 @Service
 public class BookServiceImpl implements BookService {
 
-    Map<Integer,Book> books = new HashMap<>();
+    @Autowired
+    BookRepository bookRepository;
+
     @Override
     public Book addBook(Book book) {
-        Integer id = new Random().nextInt(1000,5000);
-        book.setId(id);
-        books.put(id,book);
-        return book;
+      return bookRepository.save(book);
     }
 
     @Override
     public Book updateBook(Integer id, Book book) {
-        if(books.containsKey(id)){
-            Book book1 = books.get(id);
-            book1.setName(book.getName());
-            book1.setAuthor(book.getAuthor());
-            book1.setCost(book.getCost());
-            book1.setGenre(book.getGenre());
-            book1.setYear(book.getYear());
-            return book1;
+        Optional<Book> book1 = bookRepository.findById(id);
+        if(book1.isPresent()){
+            Book b = book1.get();
+            b.setName(book.getName());
+            b.setYear(book.getYear());
+            b.setGenre(book.getGenre());
+            b.setAuthor(book.getAuthor());
+            b.setCost(book.getCost());
+            bookRepository.save(b);
+            return b;
         }
         return null;
     }
 
     @Override
     public void deleteBook(Integer id) {
-        books.remove(id);
+        Optional<Book> book = bookRepository.findById(id);
+        book.ifPresent(x->bookRepository.delete(x));
     }
 
     @Override
     public Book getBook(Integer id) {
-        if(books.containsKey(id)){
-            return  books.get(id);
-        }
-        return null;
+       Optional<Book> book = bookRepository.findById(id);
+        return book.orElse(null);
+    }
+
+    @Override
+    public List<Book> getBookByRange(Integer start, Integer end) {
+        return bookRepository.getByRange(start,end);
     }
 
     @Override
     public List<Book> getBooks() {
-        List<Book> res = new ArrayList<>();
-        for(Map.Entry<Integer,Book> entry : books.entrySet())
-        {
-            res.add(entry.getValue());
-        }
-        return res;
+        return bookRepository.findAll();
     }
 }
