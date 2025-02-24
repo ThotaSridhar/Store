@@ -3,8 +3,10 @@ package com.sridhar.Store.controller;
 
 import com.sridhar.Store.domain.Book;
 import com.sridhar.Store.domain.Review;
+import com.sridhar.Store.domain.Users;
 import com.sridhar.Store.service.BookService;
 import com.sridhar.Store.service.ReviewService;
+import com.sridhar.Store.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -19,8 +21,25 @@ public class UserController {
     @Autowired
     BookService bookService;
 
+
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    UserService userService;
+
+    @PostMapping("/user/login")
+    public ResponseEntity<?> login(@RequestBody Users user){
+        String res = userService.login(user);
+
+        return new ResponseEntity<>(res,HttpStatusCode.valueOf(200));
+    }
+
+    @PostMapping("/user/register")
+    public ResponseEntity<?> register(@RequestBody Users user){
+            String res = userService.register(user);
+            return new ResponseEntity<>(res,HttpStatusCode.valueOf(200));
+    }
 
     @GetMapping("/user/books")
     public ResponseEntity<?> getBooks(){
