@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/register","/login","/getcsrftoken","user/register","user/login")
+                        .requestMatchers("/register","/login","/getcsrftoken","user/register","user/login","user/test")
                         .permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
